@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "catchpoint-backend-dev.fullname" $ }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "catchpoint-backend-dev.fullname" $ }}
+                port:
+                  number: {{ .port.number }}
+          {{- end }}
+    {{- end }}
+  tls:
+  - host: {{ .Values.service.host }}
+    secretName: {{ .Values.secret.secretName }}

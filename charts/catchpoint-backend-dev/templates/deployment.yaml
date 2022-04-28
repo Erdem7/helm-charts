@@ -1,0 +1,107 @@
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ include "catchpoint-backend-dev.fullname" . }}
+  labels:
+    app: {{ include "catchpoint-backend-dev.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: 
+      app: {{ include "catchpoint-backend-dev.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "catchpoint-backend-dev.fullname" . }}
+    spec:
+      containers:
+        - name: {{ include "catchpoint-backend-dev.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: FLASK_APP
+              value: "manage.py"
+            - name: TZ
+              value: "Europe/Istanbul"
+            - name: FLASK_ENV
+              value: "development"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: CDN_API_BASE_ENDPOINT
+              value: "https://api.medianova.com/v1/"
+            - name: CATCHPOINT_API_BASE_ENDPOINT
+              value: "https://io.catchpoint.com/ui/api/"
+            - name: CATCHPOINT_ACTIVE_TEST_LIMIT
+              value: "10"
+            - name: CATCHPOINT_TEST_DURATION_IN_HOURS
+              value: "4"
+            - name: BOT_MAIL_USERNAME
+              value: "reporter@medianova.com"
+            - name: MAIL_SERVER
+              value: "smtp-mail.outlook.com"
+            - name: MAIL_PORT
+              value: "587"
+            - name: MAIL_USERNAME
+              value: "reporter@medianova.com"
+            - name: MAIL_USE_TLS
+              value: "true"
+            - name: MAIL_USE_SSL
+              value: "false"
+            - name: MAIL_RECEIVER
+              value: "sales@medianova.com"
+            - name: MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: MYSQL_HOST
+
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: MYSQL_DATABASE
+            - name: CDN_ZONE_USERKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: CDN_ZONE_USERKEY
+            - name: CDN_ZONE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: CDN_ZONE_SECRET
+            - name: CATCHPOINT_API_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: CATCHPOINT_API_CLIENT_ID
+            - name: CATCHPOINT_API_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: CATCHPOINT_API_CLIENT_SECRET
+            - name: BOT_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: BOT_MAIL_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: MAIL_PASSWORD          
+          ports:
+            - containerPort: {{ .Values.service.port }}
+      imagePullSecrets: 
+        - name: {{ .Values.imagePullSecrets }}
+
