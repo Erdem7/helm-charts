@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  GITHUB_TOKEN: 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
+  GITHUB_TOKEN: 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
 jobs:
   release:
     runs-on: ubuntu-latest
