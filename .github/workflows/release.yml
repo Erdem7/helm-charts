@@ -15,8 +15,8 @@ jobs:
           git remote set-url origin git@github.com:Erdem7/helm-charts.git
       - name: Git config
         run: |
-          git config user.email "karasahinerdem@gmail.com"
-          git config user.name "Erdem7"          
+          git config --global user.email "karasahinerdem@gmail.com"
+          git config --global user.name "Erdem7"      
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
