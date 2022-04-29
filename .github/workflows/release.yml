@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-env:
-  GITHUB_TOKEN: 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
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -13,4 +11,4 @@ jobs:
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
-          token: $GITHUB_TOKEN
+          token: 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
