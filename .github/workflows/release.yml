@@ -1,23 +1,33 @@
-name: release
+name: Release Charts
+
 on:
   push:
     branches:
       - main
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: remote
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Configure Git
         run: |
-          git remote remove origin
-          git remote add origin git@github.com:Erdem7/helm-charts.git
-          git remote set-url origin git@github.com:Erdem7/helm-charts.git
-      - name: Git config
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      # See https://github.com/helm/chart-releaser-action/issues/6
+      - name: Install Helm
         run: |
-          git config --global user.email "karasahinerdem@gmail.com"
-          git config --global user.name "Erdem7"      
-      - name: Publish Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          curl -sSLo get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+          helm init --client-only
+      - name: Add dependency chart repos
+        run: |
+          helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.0.0-alpha.2
+        env:
+          CR_TOKEN: "${{ secrets.CR_TOKEN }}"
