@@ -1,23 +1,30 @@
-name: release
+name: Release Charts
+
 on:
   push:
     branches:
       - main
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: remote
-        run: |
-          git remote remove origin
-          git remote add origin git@github.com:Erdem7/helm-charts.git
-          git remote set-url origin git@github.com:Erdem7/helm-charts.git
-      - name: Git config
-        run: |
-          git config --global user.email "karasahinerdem@gmail.com"
-          git config --global user.name "Erdem7"      
-      - name: Publish Helm charts
-        uses: stefanprodan/helm-gh-pages@master
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "Erdem7"
+          git config user.email "karasahinerdem@gmail.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.1
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.4.0
+        env:
+          CR_TOKEN: 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
