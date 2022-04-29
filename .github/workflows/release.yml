@@ -6,7 +6,7 @@ on:
       - main
 env:
   GITHUB_TOKEN: ${{ secrets.P_TOKEN }}
-  GITHUB_ACTOR: mnsod
+  GITHUB_ACTOR: Erdem7
 jobs:
   release:
     runs-on: ubuntu-latest
