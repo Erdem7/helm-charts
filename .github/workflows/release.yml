@@ -16,5 +16,4 @@ jobs:
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
-          owner: Erdem7
-          token: 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
+          token: ${{ secrets.PERSONAL_TOKEN }}
