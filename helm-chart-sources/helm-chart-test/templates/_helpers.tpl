@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "catchpoint-backend-dev.name" -}}
+{{- define "helm-chart-test.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "catchpoint-backend-dev.fullname" -}}
+{{- define "helm-chart-test.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "catchpoint-backend-dev.chart" -}}
+{{- define "helm-chart-test.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "catchpoint-backend-dev.labels" -}}
-helm.sh/chart: {{ include "catchpoint-backend-dev.chart" . }}
-{{ include "catchpoint-backend-dev.selectorLabels" . }}
+{{- define "helm-chart-test.labels" -}}
+helm.sh/chart: {{ include "helm-chart-test.chart" . }}
+{{ include "helm-chart-test.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "catchpoint-backend-dev.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "catchpoint-backend-dev.name" . }}
+{{- define "helm-chart-test.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "helm-chart-test.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "catchpoint-backend-dev.serviceAccountName" -}}
+{{- define "helm-chart-test.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "catchpoint-backend-dev.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "helm-chart-test.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
