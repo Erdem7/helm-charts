@@ -1,1 +1,14 @@
-
+apiVersion: v1
+entries:
+  catchpoint-backend-dev:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-04-29T13:21:37.61603925+03:00"
+    description: A Helm chart for Kubernetes
+    digest: 55b88b2245cd1999ae5b5cc7f0fbe78c904991e334fdc022492d6b95d684c9a2
+    name: catchpoint-backend-dev
+    type: application
+    urls:
+    - https://github.com/Erdem7/helm-charts/releases/download/catchpoint-dev/catchpoint-backend-dev-1.0.0.tgz
+    version: 1.0.0
+generated: "2022-04-29T13:21:37.614526246+03:00"
