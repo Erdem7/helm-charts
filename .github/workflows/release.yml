@@ -13,6 +13,10 @@ jobs:
           git remote remove origin
           git remote add origin git@github.com:Erdem7/helm-charts.git
           git remote set-url origin git@github.com:Erdem7/helm-charts.git
+      - name: Git config
+        run: |
+          git config user.email "karasahinerdem@gmail.com"
+          git config user.name "Erdem7"          
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
